@@ -17,6 +17,9 @@
         public static IParser<U> Then<T, U>(this IParser<T> parser, Func<T, IParser<U>> continuation)
             => new ThenParser<T, U>(parser, continuation);
 
+        public static IParser<IList<T>> Many<T>(this IParser<T> parser)
+            => new ManyParser<T>(parser);
+
         public static IParser<U> Select<T, U>(this IParser<T> parser, Func<T, U> selector)
             => new SelectParser<T, U>(parser, selector);
 

@@ -5,27 +5,28 @@
         [Fact]
         public void RequiresRelatedNomenclatureTest()
         {
-            var dsl = "vereist betrekkelijk nummer vervangen uitneembare onderprothese uit 123456 hallo";
+            var dsl = "vereist betrekkelijk nummer vervangen uitneembare onderprothese uit 999999 (riziv) 12345 (ziekenhuis) 987654";
 
             var parser = from vereist in Dsl.String("vereist")
-                         from w1 in Dsl.Whitespace
+                         from _ in Dsl.Whitespace
                          from betrekkelijk in Dsl.String("betrekkelijk")
-                         from w2 in Dsl.Whitespace
+                         from __ in Dsl.Whitespace
                          from nummer in Dsl.String("nummer")
-                         from w3 in Dsl.Whitespace
+                         from ___ in Dsl.Whitespace
                          from relatedNomenclatureType in TarfacDsl.RelatedNomenclatureType
-                         from uit in Dsl.String(" uit ")
-                         from nomenclatureIdentification in TarfacDsl.NomenclatureIdentification
-                         from w4 in Dsl.Whitespace
-                         from hallo in Dsl.String("hallo")
+                         from ____ in Dsl.Whitespace
+                         from uit in Dsl.String("uit")
+                         from nomenclatures in Dsl.Whitespace.Then(_ => TarfacDsl.NomenclatureIdentification).Many()
                          .End()
                          select new RequiresRelatedNomenclature
                          {
                              RelatedNomenclatureType = relatedNomenclatureType,
-                             Nomenclatures = new[] { nomenclatureIdentification }
+                             Nomenclatures = nomenclatures
                          } as Requirement;
 
             var (result, value) = parser.Parse(dsl);
+
+            var errorMessage = result.GetErrorMessage();
         }
     }
 

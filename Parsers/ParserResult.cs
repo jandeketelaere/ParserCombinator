@@ -45,5 +45,10 @@
 
         public static ParserResult Error(string source, string remainder, string expected)
             => new ParserResult(false, source, remainder, expected);
+
+        public string GetErrorMessage()
+        {
+            return $"Expected '{Expected}' at position '{Remainder}'";
+        }
     }
 }
